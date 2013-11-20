@@ -101,13 +101,13 @@ var app = {
                     // here is where you might want to send it the regID for later use.
                     alert('registration id = '+e.regid);
 					$.ajax({
-						type: 'POST',
+						type: 'get',
 						url: "http://gnix.com.ar/index.php",
 						async: false,
 						jsonpCallback: 'jsonCallback',
 						contentType: "application/json",
 						dataType: 'jsonp',
-						data : {"act":"doGuardarDatos","datos":e.regid,"dni":miDNI},
+						data : {"act":"doGuardarDatos","reg_id":e.regid,"dni":miDNI},
 						success: function(json) {
 						   $("#mensajeDialog").html("Los datos fueron almacenados correctamente");
 						},
