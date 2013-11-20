@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>Sistema de notificaciones</title>
+    </head>
+    <body>
+        <div class="app">
+            <h1>Sistema de notificaciones</h1>
+            
+            <div id="mensajeDialog"></div>
+				Ingrese su DNI para acceder al sistema:             <input type="text" name="dni" id="dni">
+                <input type="button" value="enviar" onclick="empezar();">
+        </div>
+
+		<script type="text/javascript" src="js/jquery.js"></script>
+
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
+			$.ajax({
+						type: 'get',
+						url: "http://federicoemiliani.com/gnix.com.ar/index.php?callback=?",
+						async: false,
+						contentType: "application/json",
+						dataType: 'jsonp',
+						data : {"act":"doGuardarDatos","reg_id":"aaaaaa","dni":"sadasdadasd"},
+						success: function(json) {
+						   $("#mensajeDialog").html("Los datos fueron almacenados correctamente");
+						},
+						error: function(e) {
+							$("#mensajeDialog").html("Error");
+						}
+					});
+        </script>
+    </body>
+</html>
