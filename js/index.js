@@ -48,26 +48,21 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-        alert("aca ando rlz");
         var pushNotification = window.plugins.pushNotification;
-        alert("inicie pushnotification");
+        
         // TODO: Enter your own GCM Sender ID in the register call for Android
         if (device.platform == 'android' || device.platform == 'Android') {
-            alert("voy a registrar la kga de dispositivo");
             pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"977857505502","ecb":"app.onNotificationGCM"});
-            alert("q ondiwiiii");
         }
         else {
             pushNotification.register(this.tokenHandler,this.errorHandler,{"badge":"true","sound":"true","alert":"true","ecb":"app.onNotificationAPN"});
         }
-        alert("tengo q cambiar el mensaje");
+        
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
-
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
-
         console.log('Received Event: ' + id);
     },
     // iOS
@@ -102,7 +97,7 @@ var app = {
                     alert('registration id = '+e.regid);
 					$.ajax({
 						type: 'get',
-						url: "http://gnix.com.ar/index.php",
+						url: "http://federicoemiliani.com/gnix.com.ar/index.php?callback=?",
 						async: false,
 						jsonpCallback: 'jsonCallback',
 						contentType: "application/json",
