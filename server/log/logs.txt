@@ -1,0 +1,9 @@
+
+ SELECT FLOOR(RAND() * COUNT(*)) AS `offset` FROM `testimonios` where status =1  ERROR :Table 'juc.testimonios' doesn't exist
+ SELECT * FROM `testimonios` where status = 1 LIMIT , 1  ERROR :You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' 1' at line 1
+select * from eventos where id='' ERROR :Table 'juc.eventos' doesn't exist
+select * from eventos where id='' ERROR :Table 'juc.eventos' doesn't exist
+select * from eventos where id='5' ERROR :Table 'juc.eventos' doesn't exist
+select * from eventos where id='5' ERROR :Table 'juc.eventos' doesn't exist
+select * from eventos where id='5' ERROR :Table 'juc.eventos' doesn't exist
+select * from eventos where id='5' ERROR :Table 'juc.eventos' doesn't exist

@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES">
+<html>
+<head>
+<title>{titulo_evento}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="description" content="{titulo_evento}" />
+<meta http-equiv="keywords" content="{titulo_evento}" />
+<link href="css/default.css" rel="stylesheet" type="text/css">
+<link href="css/custom-theme/jquery-ui-1.8.13.custom.css" rel="stylesheet" type="text/css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" type="text/javascript"></script>
+<script src="js/jquery.validate.min.js" type="text/javascript" ></script>
+<script src="js/jquery.cycle.all.js" type="text/javascript" ></script>
+<script src="js/jquery-ui-1.8.13.custom.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="pagina">
+        <div id="header">
+            <div id="head1">
+                <div class="anim">
+                    {imagen}
+                </div>
+                <div class="fijo">
+                    <h1>{titulo_evento}</h1>
+                    <h3>{subtitulo}</h3>
+                </div>
+            </div>            
+         </div>
+        <div id="content">
+                <div class="contenido">
+                    {contenido}
+                </div>
+               
+        </div>        
+	</div>
+    
+    <div id="footer">
+      <div class="inner">
+            <div class="subfooter">{titulo_evento} - &copy  Copyright {anio}</div>
+  </div>
+</div>
+</div><!-- fin wrapper-->
+
+
+<script language="javascript">
+$(function() {
+	$('.anim').cycle({ 
+		fx:    'fade', 
+		pause:  3 
+	});
+});
+
+$('.stripeme tr:even').addClass("fondo_marron_claro");
+
+</script>
+</body>
+</html>
