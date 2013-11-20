@@ -86,7 +86,7 @@ var app = {
     },
     // Android
     onNotificationGCM: function(e) {
-        alert("aca vengo como los rules");
+        
         switch( e.event )
         {
             case 'registered':
@@ -104,10 +104,10 @@ var app = {
 						dataType: 'jsonp',
 						data : {"act":"doGuardarDatos","reg_id":e.regid,"dni":miDNI},
 						success: function(json) {
-						   $("#mensajeDialog").html("Los datos fueron almacenados correctamente");
+						   alert("todo OK");
 						},
 						error: function(e) {
-							$("#mensajeDialog").html("Los datos fueron almacenados correctamente");
+							alert("todo Mal");
 						}
 					});
 					
