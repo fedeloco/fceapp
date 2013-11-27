@@ -1,25 +1,39 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+var Notificaciones =  new Array();
 var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
+		
+		//Ahora pido al servidor el listado de notificaciones y si no esta en la base de datos local lo agrego.
+		
+		$.ajax({
+			    type: 'get',
+				url: "http://federicoemiliani.com/gnix.com.ar/index.php?callback=?",
+				async: false,
+				jsonpCallback: 'jsonCallback',
+				contentType: "application/json",
+				dataType: 'jsonp',
+				data : {"act":"doPedirNotificaciones","id":miDNI},
+				success: function(json) {
+					//cargar listado
+					
+					resultado='<ul id="listadoList" data-role="listview"  data-filter="true"></ul>';
+					$("#listado").append(resultado);
+					jQuery.each(json, function(i, val) {
+						$("#listadoList").append("<li >"+json[i].mensaje+"</li>");
+						//a medida que cargo los resultados me fijo si los tengo que agregar al storage local
+						Notificaciones.push( new Array(json[i].id,json[i].mensaje));
+					});
+					ingresarNotificaciones(0);
+					$("#listadoList").listview();
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert("Hubo un error en el servidor, por favor intente más tarde")
+				}
+			});
+		
+		
+		
     },
     // Bind Event Listeners
     //
@@ -58,25 +72,16 @@ var app = {
             pushNotification.register(this.tokenHandler,this.errorHandler,{"badge":"true","sound":"true","alert":"true","ecb":"app.onNotificationAPN"});
         }
         
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-        console.log('Received Event: ' + id);
     },
     // iOS
     onNotificationAPN: function(event) {
         var pushNotification = window.plugins.pushNotification;
-        console.log("Received a notification! " + event.alert);
-        console.log("event sound " + event.sound);
-        console.log("event badge " + event.badge);
-        console.log("event " + event);
+        
         if (event.alert) {
             navigator.notification.alert(event.alert);
         }
         if (event.badge) {
-            console.log("Set badge on  " + pushNotification);
+            
             pushNotification.setApplicationIconBadgeNumber(this.successHandler, event.badge);
         }
         if (event.sound) {
@@ -117,7 +122,7 @@ var app = {
             case 'message':
               // this is the actual push notification. its format depends on the data model
               // of the intermediary push server which must also be reflected in GCMIntentService.java
-              alert('message = '+e.message+' msgcnt = '+e.msgcnt);
+              alert(e.message);
             break;
 
             case 'error':
