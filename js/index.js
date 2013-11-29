@@ -5,7 +5,22 @@ var app = {
         this.bindEvents();
 		
 		//Ahora pido al servidor el listado de notificaciones y si no esta en la base de datos local lo agrego.
-		
+		if (!navigator.onLine){
+			//en vez de cargar los items de internet los tomo del local storage...
+			db.transaction(function(tx){
+				tx.executeSql("Select * from notificaciones",[],function(tx,results){
+					var len = results.rows.length;
+					resultado='<ul id="listadoList" data-role="listview"  data-filter="true"></ul>';
+					$("#listado").append(resultado);
+					for (var i=0; i < len; i = i + 1) {
+						console.log(results.rows.item(i));
+						$("#listadoList").append("<li >"+results.rows.item(i).mensaje+"</li>");							
+					}
+					$("#listadoList").listview();
+				});
+			});
+		}//fin sin coneccion
+		else{
 		$.ajax({
 			    type: 'get',
 				url: "http://federicoemiliani.com/gnix.com.ar/index.php?callback=?",
@@ -27,11 +42,12 @@ var app = {
 					ingresarNotificaciones(0);
 					$("#listadoList").listview();
 				},
+				
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert("Hubo un error en el servidor, por favor intente más tarde")
 				}
 			});
-		
+		}//fin con conexion
 		
 		
     },
