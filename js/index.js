@@ -10,11 +10,13 @@ var app = {
 			db.transaction(function(tx){
 				tx.executeSql("Select * from notificaciones",[],function(tx,results){
 					var len = results.rows.length;
+					
+					
 					resultado='<ul id="listadoList" data-role="listview"  data-filter="true"></ul>';
 					$("#listado").append(resultado);
 					for (var i=0; i < len; i = i + 1) {
 						console.log(results.rows.item(i));
-						$("#listadoList").append("<li >"+results.rows.item(i).mensaje+"</li>");							
+						$("#listadoList").append("<li >"+results.rows.item(i).mensaje+'<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">Canal</span></li>');							
 					}
 					$("#listadoList").listview();
 				});
@@ -31,11 +33,13 @@ var app = {
 				data : {"act":"doPedirNotificaciones","id":miDNI},
 				success: function(json) {
 					//cargar listado
-					
+					if (json.length == 0){
+						alert("No hay notificaciones recientes");
+					}
 					resultado='<ul id="listadoList" data-role="listview"  data-filter="true"></ul>';
 					$("#listado").append(resultado);
 					jQuery.each(json, function(i, val) {
-						$("#listadoList").append("<li >"+json[i].mensaje+"</li>");
+						$("#listadoList").append("<li >"+json[i].mensaje+'<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">Canal</span></li>');
 						//a medida que cargo los resultados me fijo si los tengo que agregar al storage local
 						Notificaciones.push( new Array(json[i].id,json[i].mensaje));
 					});
