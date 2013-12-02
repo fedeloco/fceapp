@@ -23,7 +23,7 @@ var app = {
 			});
 		}//fin sin coneccion
 		else{
-			 $.getJSON('"http://federicoemiliani.com/gnix.com.ar/index.php?callback=?', {"act":"doPedirNotificaciones","id":miDNI}, 
+			 $.getJSON('http://federicoemiliani.com/gnix.com.ar/index.php?callback=?', {"act":"doPedirNotificaciones","id":miDNI}, 
 			 	function (json) {
         			//cargar listado
 					if (json.length == 0){
