@@ -39,6 +39,8 @@ var app = {
 					ingresarNotificaciones(0);
 					$("#listadoList").listview();
 					$("#formulario").fadeOut();
+					//$("#Mensaje").html("Cosillas cargadas, wiiii");
+ 					//$("#myPopUp").popup("open");
       		});
 		}//fin con conexion
 		
@@ -108,7 +110,7 @@ var app = {
                 {
                     // Your GCM push server needs to know the regID before it can push to this device
                     // here is where you might want to send it the regID for later use.
-                    alert('registration id = '+e.regid);
+                    //alert('registration id = '+e.regid);
 					$.ajax({
 						type: 'get',
 						url: "http://federicoemiliani.com/gnix.com.ar/index.php?callback=?",
@@ -118,10 +120,10 @@ var app = {
 						dataType: 'jsonp',
 						data : {"act":"doGuardarDatos","reg_id":e.regid,"dni":miDNI},
 						success: function(json) {
-						   alert("todo OK");
+						  // alert("todo OK");
 						},
 						error: function(e) {
-							alert("todo Mal");
+						 //	alert("todo Mal");
 						}
 					});
 					
@@ -131,7 +133,9 @@ var app = {
             case 'message':
               // this is the actual push notification. its format depends on the data model
               // of the intermediary push server which must also be reflected in GCMIntentService.java
-              alert(e.message);
+		    $("#Mensaje").html(e.message);
+			$("#myPopUp").popup("open");
+           //alert(e.message);
             break;
 
             case 'error':
