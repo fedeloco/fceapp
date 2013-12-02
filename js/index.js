@@ -45,10 +45,11 @@ var app = {
 					});
 					ingresarNotificaciones(0);
 					$("#listadoList").listview();
+					$("#formulario").fadeOut();
 				},
 				
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert("Hubo un error en el servidor, por favor intente más tarde")
+					alert("Hubo un error en el servidor, por favor intente más tarde Error:"+thrownError+" Status:"+xhr.status)
 				}
 			});
 		}//fin con conexion

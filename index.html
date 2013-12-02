@@ -85,7 +85,7 @@
 				tx.executeSql("Select * from usuario",[],txusuarioRegistrado,txError);	
 			}
 			function almacenarUsuario(tx){
-				tx.executeSql("INSERT INTO repos(dni) VALUES (?)",[miDNI],txSuccess,txError);
+				tx.executeSql("INSERT INTO usuario(dni) VALUES (?)",[miDNI],txSuccess,txError);
 			}
 			
 			
