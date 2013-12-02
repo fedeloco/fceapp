@@ -23,16 +23,9 @@ var app = {
 			});
 		}//fin sin coneccion
 		else{
-		$.ajax({
-			    type: 'get',
-				url: "http://federicoemiliani.com/gnix.com.ar/index.php?callback=?",
-				async: false,
-				jsonpCallback: 'jsonCallback',
-				contentType: "application/json",
-				dataType: 'jsonp',
-				data : {"act":"doPedirNotificaciones","id":miDNI},
-				success: function(json) {
-					//cargar listado
+			 $.getJSON('"http://federicoemiliani.com/gnix.com.ar/index.php?callback=?', {"act":"doPedirNotificaciones","id":miDNI}, 
+			 	function (json) {
+        			//cargar listado
 					if (json.length == 0){
 						alert("No hay notificaciones recientes");
 					}
@@ -46,12 +39,7 @@ var app = {
 					ingresarNotificaciones(0);
 					$("#listadoList").listview();
 					$("#formulario").fadeOut();
-				},
-				
-				error: function (xhr, ajaxOptions, thrownError) {
-					alert("Hubo un error en el servidor, por favor intente más tarde Error:"+thrownError+" Status:"+xhr.status)
-				}
-			});
+      		});
 		}//fin con conexion
 		
 		
