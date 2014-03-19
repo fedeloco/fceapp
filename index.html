@@ -10,7 +10,7 @@
     </head>
     <body>
          <div id="home" data-role="page" >
-             <div data-role="header" data-position="fixed" class="titulo">Notificaciones FCE</div>
+             <div data-role="header" data-position="fixed" class="titulo">Notificaciones FCE v 2.0 </div>
 				<div data-role="content" data-enhance="true">
                 <div align="center" id="cargando">
                 <img src="img/ajax-loader.gif">
@@ -53,9 +53,8 @@
 				db = window.openDatabase("repodb","0.1","Notificaciones", 200*1024);
 				db.transaction(createDb, txError, txSuccess);
 				//ahora me fijo si tenemos un dni cargado...
-				alert(localStorage.miDNI);
-				if (localStorage.miDNI){
-					miDNI = localStorage.miDNI;
+				miDNI = window.localStorage.getItem("miDNI");
+				if (miDNI){
 					app.initialize();
 				}else{
 					$("#formulario").slideDown(600);
@@ -67,7 +66,9 @@
             function empezar(){
 				miDNI = $("#dni").val();
 				//db.transaction(almacenarUsuario, txError, txSuccess);	
-				localStorage.miDNI =  miDNI;
+				window.localStorage.getItem("miDNI") =  miDNI;
+				alert($("#dni").val());
+				alert(localStorage.miDNI);
 				app.initialize();
 				$("#formulario").slideUp("500");
 			}
