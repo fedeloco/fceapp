@@ -83,8 +83,8 @@
 			/*Functiones de bases de datos*/
 			function createDb(tx){
 				//sacar esto despues
-				tx.executeSql("DROP TABLE usuario");
-				tx.executeSql("DROP TABLE notificaciones");
+				//tx.executeSql("DROP TABLE usuario");
+				//tx.executeSql("DROP TABLE notificaciones");
 				//end sacar esto
 				tx.executeSql("CREATE TABLE IF NOT EXISTS usuario(dni,nombre,apellido)");
 				tx.executeSql("CREATE TABLE IF NOT EXISTS notificaciones(id,mensaje,canal,ocultar)");
