@@ -53,12 +53,20 @@
 				db = window.openDatabase("repodb","0.1","Notificaciones", 200*1024);
 				db.transaction(createDb, txError, txSuccess);
 				//ahora me fijo si tenemos un dni cargado...
-				db.transaction(usuarioRegistrado, txError, txSuccess);
+				if (localStorage.miDNI){
+					miDNI = localStorage.miDNI;
+					app.initialize();
+				}else{
+					$("#formulario").slideDown(600);
+					$("#cargando").slideUp(600);
+				}
+				
 			});
 			
             function empezar(){
 				miDNI = $("#dni").val();
-				db.transaction(almacenarUsuario, txError, txSuccess);	
+				//db.transaction(almacenarUsuario, txError, txSuccess);	
+				localStorage.miDNI =  miDNI;
 				app.initialize();
 				$("#formulario").slideUp("500");
 			}
@@ -86,33 +94,9 @@
 				//tx.executeSql("DROP TABLE usuario");
 				//tx.executeSql("DROP TABLE notificaciones");
 				//end sacar esto
-				tx.executeSql("CREATE TABLE IF NOT EXISTS usuario(dni)");
 				tx.executeSql("CREATE TABLE IF NOT EXISTS notificaciones(id,mensaje,canal,ocultar)");
 			}
 			
-			function usuarioRegistrado(tx){
-				tx.executeSql("Select * from usuario",[],txusuarioRegistrado,txError);	
-			}
-			
-			function almacenarUsuario(tx){
-				tx.executeSql("INSERT INTO usuario(dni) VALUES (?)",[miDNI],txSuccess,txError);
-			}
-			
-			function txusuarioRegistrado(tx,resultados){
-				if (resultados.rows.length){
-					if (resultados.rows.item(0).dni){
-						miDNI = resultados.rows.item(0).dni;
-					}else{
-						alert("Problema");
-					}
-					alert("a"+miDNI+"b");
-					app.initialize();
-				}else{
-					$("#formulario").slideDown(600);
-					$("#cargando").slideUp(600);
-				}	
-			}
-		
 			function txError(error) {
 				console.log("Error");
 				console.log(error);
