@@ -66,9 +66,8 @@
             function empezar(){
 				miDNI = $("#dni").val();
 				//db.transaction(almacenarUsuario, txError, txSuccess);	
-				window.localStorage.getItem("miDNI") =  miDNI;
-				alert($("#dni").val());
-				alert(localStorage.miDNI);
+				alert(miDNI);
+				window.localStorage.setItem("miDNI",miDNI);
 				app.initialize();
 				$("#formulario").slideUp("500");
 			}
