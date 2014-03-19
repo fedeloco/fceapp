@@ -86,7 +86,7 @@
 				//tx.executeSql("DROP TABLE usuario");
 				//tx.executeSql("DROP TABLE notificaciones");
 				//end sacar esto
-				tx.executeSql("CREATE TABLE IF NOT EXISTS usuario(dni,nombre,apellido)");
+				tx.executeSql("CREATE TABLE IF NOT EXISTS usuario(dni)");
 				tx.executeSql("CREATE TABLE IF NOT EXISTS notificaciones(id,mensaje,canal,ocultar)");
 			}
 			
@@ -100,7 +100,12 @@
 			
 			function txusuarioRegistrado(tx,resultados){
 				if (resultados.rows.length){
-					miDNI = resultados.rows.item(0).dni;
+					if (resultados.rows.item(0).dni){
+						miDNI = resultados.rows.item(0).dni;
+					}else{
+						alert("Problema");
+					}
+					alert(miDNI);
 					app.initialize();
 				}else{
 					$("#formulario").slideDown(600);
