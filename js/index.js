@@ -1,3 +1,21 @@
+function agregarElemento(texto,id,etiqueta){
+	$("#listadoList").append("<li id='elementoLista"+id+"'><a href='#'>"+texto+
+						'<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">'+etiqueta+'</span></a>'+
+						'<a href="javascript:eliminarElemento('+id+')" data-theme="a" >Eliminar</a>'+
+						'</li>');
+}
+
+function eliminarElemento(id){
+ 	$("#elementoLista"+id).slideUp(200);
+	ocultarElementoEnLocal(id);	
+	$.getJSON('http://federicoemiliani.com/gnix.com.ar/index.php?callback=?', 
+		{"act":"doBorrarNotificacionParaMi","dni":miDNI,"idNotificacion":id}, 
+	 	function (json){});
+	
+		
+}
+
+
 var Notificaciones =  new Array();
 var app = {
     // Application Constructor
@@ -23,22 +41,32 @@ var app = {
 			});
 		}//fin sin coneccion
 		else{
-			 $.getJSON('http://federicoemiliani.com/gnix.com.ar/index.php?callback=?', {"act":"doPedirNotificaciones","id":miDNI}, 
+			 $.getJSON('http://federicoemiliani.com/gnix.com.ar/index.php?callback=?', {"act":"doPedirNotificaciones","dni":miDNI}, 
 			 	function (json) {
         			//cargar listado
 					if (json.length == 0){
 						alert("No hay notificaciones recientes");
 					}
-					resultado='<ul id="listadoList" data-role="listview"  data-filter="true"></ul>';
+					
+					console.log(json.length);
+					console.log(json);
+					
+					resultado='<ul id="listadoList" data-role="listview"  data-filter="true" data-split-icon="delete"></ul>';
 					$("#listado").append(resultado);
+					$("#cargando").slideUp("100");
+					$("#listadoList").hide();
 					jQuery.each(json, function(i, val) {
-						$("#listadoList").append("<li >"+json[i].mensaje+'<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">Canal</span></li>');
-						//a medida que cargo los resultados me fijo si los tengo que agregar al storage local
-						Notificaciones.push( new Array(json[i].id,json[i].mensaje));
+						if (json[i].id_usuario != null){
+							agregarElemento(json[i].mensaje,json[i].id,json[i].nombre_canal);
+							//a medida que cargo los resultados me fijo si los tengo que agregar al storage local
+							Notificaciones.push( new Array(json[i].id,json[i].mensaje,json[i].nombre_canal,0));
+						}
 					});
 					ingresarNotificaciones(0);
 					$("#listadoList").listview();
+					$("#listadoList").slideDown();					
 					$("#formulario").fadeOut();
+
 					//$("#Mensaje").html("Cosillas cargadas, wiiii");
  					//$("#myPopUp").popup("open");
       		});

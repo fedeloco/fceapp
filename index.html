@@ -12,7 +12,11 @@
          <div id="home" data-role="page" >
              <div data-role="header" data-position="fixed" class="titulo">Notificaciones FCE</div>
 				<div data-role="content" data-enhance="true">
-             	<div id="listado">
+                <div align="center" id="cargando">
+                <img src="img/ajax-loader.gif">
+                </div>
+             	
+                <div id="listado">
                 </div>
                 <div id="formulario" style="display:none">
                     <fieldset>
@@ -30,9 +34,9 @@
         		<div data-role="header" data-theme="a" class="ui-corner-top">
 				<h1>Notificación</h1>
 				</div>
+
                <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
-				<h3 class="ui-title" id="Mensaje">Hola...</h3>
-				<a href="#" data-role="button" data-rel="back" data-transition="flow" data-theme="b">Ok</a>  
+				<h3 class="ui-title" id="Mensaje"></h3>
 			</div>
         	</div>
         </div>
@@ -46,7 +50,7 @@
 			var db
 			//Lo primero que hacemos es ver si tenemos un dni en nuestro local storage...
 			$('#home').bind('pageinit', function(event) {
-				db = window.openDatabase("repodb","0.1","Notificaciones", 200000);
+				db = window.openDatabase("repodb","0.1","Notificaciones", 200*1024);
 				db.transaction(createDb, txError, txSuccess);
 				//ahora me fijo si tenemos un dni cargado...
 				db.transaction(usuarioRegistrado, txError, txSuccess);
@@ -56,6 +60,7 @@
 				miDNI = $("#dni").val();
 				db.transaction(almacenarUsuario, txError, txSuccess);	
 				app.initialize();
+				$("#formulario").slideUp("500");
 			}
 			
 			var idActual;
@@ -64,10 +69,10 @@
 				datos = Notificaciones[indice];
 				if (!datos) return
 				db.transaction(function(tx){
-					tx.executeSql("Select * from notificaciones where id=?",[datos[0]],
+					tx.executeSql("select * from notificaciones where id=?",[datos[0]],
 					function(tx,results){
 						if (!results.rows.length){
-							tx.executeSql("insert into notificaciones (id,mensaje) values(?,?) ",datos);
+							tx.executeSql("insert into notificaciones (id,mensaje,canal,ocultar) values(?,?,?,?) ",datos);
 						}
 						return ingresarNotificaciones(indice+1);
 					});
@@ -75,20 +80,23 @@
 				, txError, txSuccess);
 			}
 			
-			
 			/*Functiones de bases de datos*/
-			function createDb(tx) {
+			function createDb(tx){
+				//sacar esto despues
+				tx.executeSql("DROP TABLE usuario");
+				tx.executeSql("DROP TABLE notificaciones");
+				//end sacar esto
 				tx.executeSql("CREATE TABLE IF NOT EXISTS usuario(dni,nombre,apellido)");
-				tx.executeSql("CREATE TABLE IF NOT EXISTS notificaciones(id,mensaje)");
+				tx.executeSql("CREATE TABLE IF NOT EXISTS notificaciones(id,mensaje,canal,ocultar)");
 			}
 			
 			function usuarioRegistrado(tx){
 				tx.executeSql("Select * from usuario",[],txusuarioRegistrado,txError);	
 			}
+			
 			function almacenarUsuario(tx){
 				tx.executeSql("INSERT INTO usuario(dni) VALUES (?)",[miDNI],txSuccess,txError);
 			}
-			
 			
 			function txusuarioRegistrado(tx,resultados){
 				if (resultados.rows.length){
@@ -96,17 +104,33 @@
 					app.initialize();
 				}else{
 					$("#formulario").slideDown(600);
-					
+					$("#cargando").slideUp(600);
 				}	
 			}
-			
 		
 			function txError(error) {
-				console.log("Database error: " + error);
+				console.log("Error");
+				console.log(error);
 			}
 			
 			function txSuccess() {
 				console.log("Success");
+			}
+			function txSuccess2(extra) {
+				console.log("Success");
+				console.log(extra);
+			}
+			
+			function ocultarElementoEnLocal(idNotificacion){
+				//alert(idNotificacion);
+				idNotificacion = idNotificacion.toString();
+				
+				db = window.openDatabase("repodb","0.1","Notificaciones", 200*1024);
+				
+				db.transaction(function(tx){
+					tx.executeSql("update notificaciones set ocultar='1' where id=? ;",[idNotificacion], txSuccess2,txError);
+				}, txError, txSuccess2());
+				
 			}
         </script>
     </body>
