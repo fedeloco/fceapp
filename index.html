@@ -53,6 +53,7 @@
 				db = window.openDatabase("repodb","0.1","Notificaciones", 200*1024);
 				db.transaction(createDb, txError, txSuccess);
 				//ahora me fijo si tenemos un dni cargado...
+				alert(localStorage.miDNI);
 				if (localStorage.miDNI){
 					miDNI = localStorage.miDNI;
 					app.initialize();
