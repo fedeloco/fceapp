@@ -1,7 +1,7 @@
 function agregarElemento(texto,id,etiqueta){
-	$("#listadoList").append("<li id='elementoLista"+id+"'><a href='#' class='mensajeA'><span class='texto'>"+texto+
-						'</span><span class="ui-li-count ui-btn-up-c ui-btn-corner-all">'+etiqueta+'</span></a>'+
-						'<a href="javascript:eliminarElemento('+id+')" data-theme="a" >Eliminar</a>'+
+	$("#listadoList").append("<li id='elementoLista"+id+"'><a href='#' class='mensajeA'><span class='texto'>"+texto +
+						'</span><span class="ui-li-count ui-btn-up-c ui-btn-corner-all">'+etiqueta+'</span></a>' +
+						'<a href="javascript:eliminarElemento('+id+')" data-theme="a" >Eliminar</a>' +
 						'</li>');
 }
 
@@ -20,13 +20,13 @@ function eliminarElemento(id){
 
 var Notificaciones =  new Array();
 var app = {
-    // Application Constructor
+
     initialize: function() {
         this.bindEvents();
+		var pushNotification = window.plugins.pushNotification;
+        pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"515684167197","ecb":"app.onNotificationGCM"});
 		
-		//Ahora pido al servidor el listado de notificaciones y si no esta en la base de datos local lo agrego.
 		if (!navigator.onLine){
-			//en vez de cargar los items de internet los tomo del local storage...
 			db.transaction(function(tx){
 				tx.executeSql("Select * from notificaciones",[],function(tx,results){
 					var len = results.rows.length;
@@ -38,25 +38,21 @@ var app = {
 					$("#listadoList").listview();
 				});
 			});
-		}//fin sin coneccion
+		}
 		else{
-
-			 $.getJSON('http://federicoemiliani.com/gnix.com.ar/index.php?callback=?', {"act":"doPedirNotificaciones","dni":window.localStorage.getItem("miDNI")}, 
+			 $.getJSON('http://federicoemiliani.com/gnix.com.ar/index.php?callback=?', 
+			 			{"act":"doPedirNotificaciones","dni":window.localStorage.getItem("miDNI")}, 
 			 	function (json) {
-        			//cargar listado
 					if (json.length == 0){
 						alert("No hay notificaciones recientes");
 					}
-					
 					console.log(json.length);
 					console.log(json);
-					
 					resultado='<ul id="listadoList" data-role="listview"  data-filter="true" data-split-icon="delete"></ul>';
 					$("#listado").append(resultado);
 					$("#cargando").hide();
 					//$("#listadoList").hide();
 					jQuery.each(json, function(i, val) {
-
 						if (json[i].id_usuario != null){
 							agregarElemento(json[i].mensaje,json[i].id,json[i].nombre_canal);
 							//a medida que cargo los resultados me fijo si los tengo que agregar al storage local
@@ -65,27 +61,13 @@ var app = {
 					});
 					ingresarNotificaciones(0);
 					$("#listadoList").listview();
-					//$("#listadoList").show();					
 					$("#formulario").hide();
-
-					//$("#Mensaje").html("Cosillas cargadas, wiiii");
- 					//$("#myPopUp").popup("open");
       		});
-		}//fin con conexion
-		
-		
+		}
     },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
     },
@@ -96,23 +78,18 @@ var app = {
         console.log("Error Handler  " + error);
         alert("Errors: "+error);
     },
-    // result contains any message sent from the plugin call
     successHandler: function(result) {
         alert('Success! Result = '+result)
     },
-    // Update DOM on a Received Event
     receivedEvent: function(id) {
         var pushNotification = window.plugins.pushNotification;
-
         if (device.platform == 'android' || device.platform == 'Android') {
             pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"515684167197","ecb":"app.onNotificationGCM"});
         }
         else {
             pushNotification.register(this.tokenHandler,this.errorHandler,{"badge":"true","sound":"true","alert":"true","ecb":"app.onNotificationAPN"});
         }
-        
     },
-    // iOS
     onNotificationAPN: function(event) {
    
     },
