@@ -23,9 +23,6 @@ var app = {
 
     initialize: function() {
         this.bindEvents();
-		var pushNotification = window.plugins.pushNotification;
-        pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"515684167197","ecb":"app.onNotificationGCM"});
-		
 		if (!navigator.onLine){
 			db.transaction(function(tx){
 				tx.executeSql("Select * from notificaciones",[],function(tx,results){
