@@ -103,8 +103,7 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var pushNotification = window.plugins.pushNotification;
-        
-        // TODO: Enter your own GCM Sender ID in the register call for Android
+
         if (device.platform == 'android' || device.platform == 'Android') {
             pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"515684167197","ecb":"app.onNotificationGCM"});
         }
@@ -115,19 +114,7 @@ var app = {
     },
     // iOS
     onNotificationAPN: function(event) {
-        var pushNotification = window.plugins.pushNotification;
-        
-        if (event.alert) {
-            navigator.notification.alert(event.alert);
-        }
-        if (event.badge) {
-            
-            pushNotification.setApplicationIconBadgeNumber(this.successHandler, event.badge);
-        }
-        if (event.sound) {
-            var snd = new Media(event.sound);
-            snd.play();
-        }
+   
     },
     // Android
     onNotificationGCM: function(e) {
@@ -149,10 +136,10 @@ var app = {
 						dataType: 'jsonp',
 						data : {"act":"doGuardarDatos","reg_id":e.regid,"dni":miDNI},
 						success: function(json) {
-						  // alert("todo OK");
+						   alert("todo OK " + e.regid);
 						},
 						error: function(e) {
-						 //	alert("todo Mal");
+						 	alert("todo Mal");
 						}
 					});
 					
@@ -160,11 +147,11 @@ var app = {
             break;
 
             case 'message':
-              // this is the actual push notification. its format depends on the data model
-              // of the intermediary push server which must also be reflected in GCMIntentService.java
-		    $("#Mensaje").html(e.message);
-			$("#myPopUp").popup("open");
-           //alert(e.message);
+              	// this is the actual push notification. its format depends on the data model
+              	// of the intermediary push server which must also be reflected in GCMIntentService.java
+		    	$("#Mensaje").html(e.message);
+				$("#myPopUp").popup("open");
+           		
             break;
 
             case 'error':
