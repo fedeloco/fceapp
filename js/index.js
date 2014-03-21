@@ -1,6 +1,6 @@
 function agregarElemento(texto,id,etiqueta){
-	$("#listadoList").append("<li id='elementoLista"+id+"'><a href='#'>"+texto+
-						'<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">'+etiqueta+'</span></a>'+
+	$("#listadoList").append("<li id='elementoLista"+id+"'><a href='#' class='mensajeA'><span class='texto'>"+texto+
+						'</span><span class="ui-li-count ui-btn-up-c ui-btn-corner-all">'+etiqueta+'</span></a>'+
 						'<a href="javascript:eliminarElemento('+id+')" data-theme="a" >Eliminar</a>'+
 						'</li>');
 }
@@ -8,8 +8,10 @@ function agregarElemento(texto,id,etiqueta){
 function eliminarElemento(id){
  	$("#elementoLista"+id).slideUp(200);
 	ocultarElementoEnLocal(id);	
+	alert("borrando"+window.localStorage.getItem("miDNI")+" "+id);
+	
 	$.getJSON('http://federicoemiliani.com/gnix.com.ar/index.php?callback=?', 
-		{"act":"doBorrarNotificacionParaMi","dni":miDNI,"idNotificacion":id}, 
+		{"act":"doBorrarNotificacionParaMi","dni":window.localStorage.getItem("miDNI"),"idNotificacion":id}, 
 	 	function (json){});
 	
 		
@@ -41,8 +43,8 @@ var app = {
 			});
 		}//fin sin coneccion
 		else{
-			alert(localStorage.miDNI);
-			 $.getJSON('http://federicoemiliani.com/gnix.com.ar/index.php?callback=?', {"act":"doPedirNotificaciones","dni":localStorage.miDNI}, 
+
+			 $.getJSON('http://federicoemiliani.com/gnix.com.ar/index.php?callback=?', {"act":"doPedirNotificaciones","dni":miDNI}, 
 			 	function (json) {
         			//cargar listado
 					if (json.length == 0){
@@ -54,7 +56,7 @@ var app = {
 					
 					resultado='<ul id="listadoList" data-role="listview"  data-filter="true" data-split-icon="delete"></ul>';
 					$("#listado").append(resultado);
-					$("#cargando").slideUp("100");
+					$("#cargando").hide();
 					$("#listadoList").hide();
 					jQuery.each(json, function(i, val) {
 						if (json[i].id_usuario != null){
@@ -65,8 +67,8 @@ var app = {
 					});
 					ingresarNotificaciones(0);
 					$("#listadoList").listview();
-					$("#listadoList").slideDown();					
-					$("#formulario").fadeOut();
+					$("#listadoList").show();					
+					$("#formulario").hide();
 
 					//$("#Mensaje").html("Cosillas cargadas, wiiii");
  					//$("#myPopUp").popup("open");

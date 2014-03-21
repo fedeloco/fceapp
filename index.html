@@ -57,19 +57,19 @@
 				if (miDNI){
 					app.initialize();
 				}else{
-					$("#formulario").slideDown(600);
-					$("#cargando").slideUp(600);
+					$("#formulario").show();
+					$("#cargando").hide();
 				}
 				
 			});
 			
+			
             function empezar(){
 				miDNI = $("#dni").val();
 				//db.transaction(almacenarUsuario, txError, txSuccess);	
-				alert(miDNI);
 				window.localStorage.setItem("miDNI",miDNI);
 				app.initialize();
-				$("#formulario").slideUp("500");
+				//$("#formulario").show();
 			}
 			
 			var idActual;
@@ -122,6 +122,10 @@
 				}, txError, txSuccess2());
 				
 			}
+			
+			$("#listadoList li a.mensajeA").live("click",function(){ 
+				alert( $(this).find("span.texto",0).html() );
+			});
         </script>
     </body>
 </html>
