@@ -69,7 +69,7 @@
 				//db.transaction(almacenarUsuario, txError, txSuccess);	
 				window.localStorage.setItem("miDNI",miDNI);
 				$("#formulario").hide();
-				setTimeout(	app.initialize(),200);
+				setTimeout(function(){app.initialize();},500);
 				//$("#formulario").show();
 			}
 			
