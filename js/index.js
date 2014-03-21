@@ -56,7 +56,7 @@ var app = {
 					$("#cargando").hide();
 					//$("#listadoList").hide();
 					jQuery.each(json, function(i, val) {
-						alert(json[i].mensaje);
+
 						if (json[i].id_usuario != null){
 							agregarElemento(json[i].mensaje,json[i].id,json[i].nombre_canal);
 							//a medida que cargo los resultados me fijo si los tengo que agregar al storage local
