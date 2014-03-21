@@ -68,7 +68,8 @@
 				miDNI = $("#dni").val();
 				//db.transaction(almacenarUsuario, txError, txSuccess);	
 				window.localStorage.setItem("miDNI",miDNI);
-				app.initialize();
+				$("#formulario").hide();
+				setTimeout(	app.initialize(),200);
 				//$("#formulario").show();
 			}
 			
