@@ -30,12 +30,9 @@ var app = {
 			db.transaction(function(tx){
 				tx.executeSql("Select * from notificaciones",[],function(tx,results){
 					var len = results.rows.length;
-					
-					
 					resultado='<ul id="listadoList" data-role="listview"  data-filter="true"></ul>';
 					$("#listado").append(resultado);
 					for (var i=0; i < len; i = i + 1) {
-						console.log(results.rows.item(i));
 						$("#listadoList").append("<li >"+results.rows.item(i).mensaje+'<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">Canal</span></li>');							
 					}
 					$("#listadoList").listview();
@@ -57,8 +54,9 @@ var app = {
 					resultado='<ul id="listadoList" data-role="listview"  data-filter="true" data-split-icon="delete"></ul>';
 					$("#listado").append(resultado);
 					$("#cargando").hide();
-					$("#listadoList").hide();
+					//$("#listadoList").hide();
 					jQuery.each(json, function(i, val) {
+						alert(json[i].mensaje);
 						if (json[i].id_usuario != null){
 							agregarElemento(json[i].mensaje,json[i].id,json[i].nombre_canal);
 							//a medida que cargo los resultados me fijo si los tengo que agregar al storage local
@@ -67,7 +65,7 @@ var app = {
 					});
 					ingresarNotificaciones(0);
 					$("#listadoList").listview();
-					$("#listadoList").show();					
+					//$("#listadoList").show();					
 					$("#formulario").hide();
 
 					//$("#Mensaje").html("Cosillas cargadas, wiiii");
